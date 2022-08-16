@@ -1,5 +1,7 @@
-import express from "express";
-import cors from "cors";
+import express from 'express';
+import cors from 'cors';
+import sql from 'mssql';
+import { test_conexao } from './test_bd.js'
 import { routes } from "./routes.js";
 const port = process.env.PORT = 8080;
 const app = express();
@@ -13,6 +15,13 @@ app.use(express.urlencoded({
 
 app.use(routes);
 
-app.listen(port, () => {
-    console.log(`Server running on ${port}`);
+test_conexao().then((res) => {
+    if(res == true) 
+    {
+        app.listen(port, () => {
+            console.log(`Server running on ${port}`);
+        })
+    }  
+
 })
+
