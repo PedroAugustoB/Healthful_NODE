@@ -3,22 +3,33 @@ import { sqlConfig } from './src/utils/database.js';
 
 export async function test_conexao(){
 
-    sql.on('error', err => {
-        console.log('lib teste_bd.js:' + err);
-        return false;
-    })
-
-    const pool = await sql.connect(sqlConfig);
-
-    if( pool._connected == true )
+    
+        sql.on('error', err => {
+            console.log('lib teste_bd.js:' + err);
+            return false;
+        })
+    
+        const pool = await sql.connect(sqlConfig);
+    
+    try 
     {
-        console.log('conexão estabelecida');
-        pool.close();
-        return true
+        if( pool._connected == true )
+        {
+            console.log('conexão estabelecida');
+            pool.close();
+            return true
+        }
+        else{
+            console.log('connection test_bd.js:'  + pool);
+            pool.close();
+            return false
+        }
     }
-    else{
-        console.log('connection test_bd.js:'  + pool);
+    catch(error) {
         pool.close();
-        return false
+        console.log('error teste_bd.js' + error)
+        return false;
     }
+    
+
 }

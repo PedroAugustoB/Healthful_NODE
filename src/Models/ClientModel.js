@@ -1,19 +1,5 @@
-let ClientesTable = [
-    {
-        nome : 'Victor H',
-        idade : '17'
-    },
-
-    {
-        nome : 'Pedro Augusto',
-        idade : '17'
-    },
-
-    {
-        nome : 'Bruno Mendeiros',
-        idade : '23'
-    },
-]
+import { CreatePoolSqlSever } from "../../pool.js";
+const conexao = await CreatePoolSqlSever();
 
 export class Client{
     constructor(nome, idade, cpf){
@@ -22,8 +8,13 @@ export class Client{
         this._cpf = cpf
     }
 
-    SelectAll(){
-        return ClientesTable;
+    static async SelectAll(){
+        try{
+            const { recordset} = await conexao.query('select * from Cliente')
+            return recordset;
+        }
+        catch(error){
+        }
     }
 
     Insert(){
